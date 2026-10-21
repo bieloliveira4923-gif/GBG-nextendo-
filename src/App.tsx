@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
-import { StatsBar } from './components/StatsBar';
-import { FilterBar } from './components/FilterBar';
 import { LevelCard } from './components/LevelCard';
 import { LevelDetailModal } from './components/LevelDetailModal';
 import { AddLevelModal } from './components/AddLevelModal';
@@ -22,7 +20,23 @@ import {
 } from './services/api';
 import { LANGUAGES, LanguageKey } from './utils/i18n';
 import { sfx, getSoundEnabled } from './utils/audio';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { copyCode } from './utils/clipboard';
+import { Search, X, Sparkles, Trophy, Radio, ArrowUpDown, SlidersHorizontal } from 'lucide-react';
+
+const GENRES = [
+  'Todos',
+  'Ação',
+  'Aventura',
+  'Plataforma',
+  'Puzzle',
+  'Terror',
+  'Tiro',
+  'Ritmo',
+  'Corrida',
+  'Arcade',
+  'Casual',
+  'Minigame',
+];
 
 export default function App() {
   const [currentLang, setCurrentLang] = useState<LanguageKey>('pt');
@@ -72,7 +86,7 @@ export default function App() {
     setToast({ message, type });
     setTimeout(() => {
       setToast((prev) => (prev?.message === message ? null : prev));
-    }, 2800);
+    }, 2400);
   }, []);
 
   // Fetch levels from server
@@ -124,25 +138,14 @@ export default function App() {
     }
   };
 
-  // Copy Game ID to clipboard
+  // Safe Copy Game ID
   const handleCopy = async (id: string, code: string) => {
+    sfx.copiar();
+    await copyCode(code);
+    setCopiedId(id);
+    showToast(`${t.copied}${code}`);
+
     try {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(code);
-      } else {
-        // Fallback for older browsers
-        const el = document.createElement('textarea');
-        el.value = code;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-      }
-
-      setCopiedId(id);
-      showToast(`${t.copied}${code}`);
-
-      // Notify server to increment copy count
       const updated = await recordCopy(id);
       setLevels((prev) =>
         prev.map((lvl) => (lvl.id === id ? { ...lvl, copies: updated.copies } : lvl))
@@ -151,14 +154,13 @@ export default function App() {
         setSelectedLevel((prev) => (prev ? { ...prev, copies: updated.copies } : null));
       }
       loadServerMeta();
-
-      setTimeout(() => {
-        setCopiedId((cur) => (cur === id ? null : cur));
-      }, 2500);
-    } catch (err) {
-      console.error(err);
-      showToast('Erro ao copiar código', 'error');
+    } catch {
+      // ignore server counter error
     }
+
+    setTimeout(() => {
+      setCopiedId((cur) => (cur === id ? null : cur));
+    }, 2000);
   };
 
   // Toggle Like
@@ -186,7 +188,6 @@ export default function App() {
       loadServerMeta();
     } catch (err) {
       console.error(err);
-      showToast('Erro ao atualizar curtida', 'error');
     }
   };
 
@@ -239,9 +240,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="max-w-[1100px] mx-auto px-3.5 py-4 min-h-screen flex flex-col justify-between">
       <div>
-        {/* Main Header */}
+        {/* Authentic Game Builder Garage Header */}
         <Header
           currentLang={currentLang}
           onLanguageChange={handleLanguageChange}
@@ -253,155 +254,198 @@ export default function App() {
           setIsSoundOn={setIsSoundOn}
         />
 
-        {/* Global Server Stats Strip */}
-        <StatsBar stats={stats} t={t} loading={loading && !stats} />
-
-        {/* Search, Filter & Sort Controls */}
-        <FilterBar
-          search={search}
-          onSearchChange={setSearch}
-          selectedGenre={selectedGenre}
-          onGenreChange={setSelectedGenre}
-          selectedDifficulty={selectedDifficulty}
-          onDifficultyChange={setSelectedDifficulty}
-          selectedSort={selectedSort}
-          onSortChange={setSelectedSort}
-          t={t}
-        />
-
-        {/* Main Content Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
-          {/* Active filter summary if searching */}
-          {(search || selectedGenre !== 'Todos' || selectedDifficulty !== 'Todas') && (
-            <div className="flex items-center justify-between pb-3 text-xs text-[#aba5f5] font-semibold">
+        {/* Authentic 2-Column Game Builder Garage Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-[170px_1fr] gap-4 items-start">
+          {/* Side Panel */}
+          <aside className="flex flex-row md:flex-col gap-3 justify-between md:justify-start items-center md:items-stretch">
+            {/* The Famous Circular Yellow Button */}
+            <button
+              onClick={() => {
+                sfx.confirmar();
+                setIsAddModalOpen(true);
+              }}
+              className="gbg-new-btn shrink-0"
+              title={t.add2}
+            >
               <span>
-                Mostrando {levels.length} de {stats?.totalLevels ?? levels.length} níveis
-                {search && <> para &quot;<strong className="text-white">{search}</strong>&quot;</>}
+                <b>+</b>
+                <span dangerouslySetInnerHTML={{ __html: t.add }} />
               </span>
+            </button>
+
+            {/* Level Counter Box */}
+            <div className="bg-[#0e0a3a] border-2 border-[#3d6bff]/40 rounded-2xl p-3.5 text-[#b9b3ff] text-xs font-bold w-full shadow-md">
+              <span className="block text-[11px] uppercase tracking-wider">{t.saved}</span>
+              <strong className="block text-white text-2xl font-black mt-0.5 tabular-nums">
+                {stats?.totalLevels ?? levels.length}
+              </strong>
+
+              <div className="mt-2 pt-2 border-t border-white/10 flex flex-col gap-1 text-[11px]">
+                <div className="flex justify-between">
+                  <span>Cópias:</span>
+                  <span className="text-[#4be39a] font-extrabold">{stats?.totalCopies ?? 0}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Criadores:</span>
+                  <span className="text-[#ffd21f] font-extrabold">{stats?.totalCreators ?? 0}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions in Side Panel */}
+            <div className="hidden md:flex flex-col gap-2 w-full">
+              <button
+                onClick={handleSurpriseMe}
+                className="gbg-btn-ghost text-xs py-2 px-3 text-center flex items-center justify-center gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#ffd21f]" />
+                <span>{t.random}</span>
+              </button>
+
               <button
                 onClick={() => {
-                  sfx.atras();
-                  setSearch('');
-                  setSelectedGenre('Todos');
-                  setSelectedDifficulty('Todas');
+                  sfx.tick();
+                  setIsCreatorsModalOpen(true);
                 }}
-                className="text-[#ffd21f] hover:underline cursor-pointer"
+                className="gbg-btn-ghost text-xs py-2 px-3 text-center flex items-center justify-center gap-1.5"
               >
-                Limpar todos os filtros
+                <Trophy className="w-3.5 h-3.5 text-[#ffd21f]" />
+                <span>{t.creatorHall}</span>
               </button>
-            </div>
-          )}
 
-          {/* Loading state */}
-          {loading && levels.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-20 text-[#aba5f5] space-y-3">
-              <RefreshCw className="w-8 h-8 animate-spin text-[#ffd21f]" />
-              <p className="font-bold">Carregando níveis do servidor...</p>
+              <div className="bg-[#0e0a3a]/80 border border-[#3d6bff]/20 rounded-xl p-2 text-[10px] text-[#4be39a] font-bold flex items-center gap-1.5 justify-center">
+                <Radio className="w-3 h-3 text-[#4be39a] animate-pulse" />
+                <span>{t.serverOnline}</span>
+              </div>
             </div>
-          )}
+          </aside>
 
-          {/* Error State */}
-          {error && levels.length === 0 && (
-            <div className="bg-red-500/20 border border-red-500/50 rounded-2xl p-6 text-center text-white space-y-3 my-8">
-              <p className="font-bold">{error}</p>
-              <button
-                onClick={() => loadLevels()}
-                className="gbg-btn-yellow px-4 py-2 rounded-xl text-xs font-black cursor-pointer inline-flex items-center gap-2"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                Tentar novamente
-              </button>
-            </div>
-          )}
-
-          {/* Levels Grid */}
-          {!loading && levels.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {levels.map((level, idx) => (
-                <LevelCard
-                  key={level.id}
-                  level={level}
-                  index={idx}
-                  onSelect={(lvl) => setSelectedLevel(lvl)}
-                  onLike={handleLike}
-                  onCopy={handleCopy}
-                  copiedId={copiedId}
-                  liked={Boolean(likedMap[level.id])}
+          {/* Main Content Area */}
+          <section className="bg-[#0e0a3a] rounded-3xl p-4 sm:p-5 border-3 border-[#3d6bff]/40 shadow-2xl min-h-[460px] flex flex-col justify-between">
+            <div>
+              {/* Giant Rounded Search Input */}
+              <div className="relative mb-3">
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(e) => {
+                    sfx.tick();
+                    setSearch(e.target.value);
+                  }}
+                  placeholder={t.ph}
+                  autoComplete="off"
+                  className="w-full bg-[#1a1470] border-3 border-[#ffd21f] text-white placeholder-[#b9b3ff] rounded-full px-5 py-2.5 text-base sm:text-lg font-extrabold outline-none focus:ring-4 focus:ring-[#ffd21f]/30 transition-all shadow-inner"
                 />
-              ))}
-            </div>
-          )}
+                {search && (
+                  <button
+                    onClick={() => {
+                      sfx.atras();
+                      setSearch('');
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#b9b3ff] hover:text-white cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
 
-          {/* Empty Search Result */}
-          {!loading && levels.length === 0 && !error && (
-            <div className="bg-[#171052] border-2 border-dashed border-[#342698] rounded-3xl p-12 text-center my-6 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#ffd21f]/10 border border-[#ffd21f]/30 mx-auto flex items-center justify-center text-3xl">
-                🎮
+              {/* Filter controls row */}
+              <div className="flex items-center justify-between gap-2 flex-wrap mb-4 text-xs">
+                {/* Genre chips */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+                  {GENRES.slice(0, 7).map((g) => {
+                    const active = selectedGenre.toLowerCase() === g.toLowerCase();
+                    return (
+                      <button
+                        key={g}
+                        onClick={() => {
+                          sfx.tick();
+                          setSelectedGenre(g);
+                        }}
+                        className={`px-3 py-1 rounded-full font-extrabold whitespace-nowrap cursor-pointer transition-all ${
+                          active
+                            ? 'bg-[#ffd21f] text-[#2a1f9e] shadow-sm'
+                            : 'bg-[#1a1470] text-[#b9b3ff] hover:text-white border border-[#3d6bff]/30'
+                        }`}
+                      >
+                        {g === 'Todos' ? t.allGenres : g}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Sort selector */}
+                <div className="flex items-center gap-1.5 bg-[#1a1470] border border-[#3d6bff]/30 rounded-full px-3 py-1">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-[#ffd21f]" />
+                  <select
+                    value={selectedSort}
+                    onChange={(e) => {
+                      sfx.tick();
+                      setSelectedSort(e.target.value);
+                    }}
+                    className="bg-transparent font-extrabold text-[#b9b3ff] focus:text-white outline-none cursor-pointer text-xs"
+                  >
+                    <option value="popular" className="bg-[#1a1470] text-white">{t.sortPopular}</option>
+                    <option value="copies" className="bg-[#1a1470] text-white">{t.sortCopies}</option>
+                    <option value="newest" className="bg-[#1a1470] text-white">{t.sortNewest}</option>
+                    <option value="rating" className="bg-[#1a1470] text-white">{t.sortRating}</option>
+                    <option value="az" className="bg-[#1a1470] text-white">{t.sortAz}</option>
+                  </select>
+                </div>
               </div>
-              <div className="max-w-md mx-auto">
-                <h3 className="text-xl font-extrabold text-white mb-2">
-                  Nenhum nível encontrado
-                </h3>
-                <p className="text-sm text-[#aba5f5] leading-relaxed">
-                  Não encontramos nenhum jogo correspondente aos filtros selecionados. Que tal publicar um jogo novo?
-                </p>
-              </div>
-              <div className="flex items-center justify-center gap-3 pt-2">
-                <button
-                  onClick={() => {
-                    sfx.confirmar();
-                    setIsAddModalOpen(true);
-                  }}
-                  className="gbg-btn-yellow px-5 py-2.5 rounded-xl text-sm font-black cursor-pointer inline-flex items-center gap-2"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  {t.addGame}
-                </button>
-                <button
-                  onClick={() => {
-                    sfx.atras();
-                    setSearch('');
-                    setSelectedGenre('Todos');
-                    setSelectedDifficulty('Todas');
-                  }}
-                  className="px-4 py-2.5 rounded-xl text-xs font-bold text-[#aba5f5] hover:text-white bg-[#221868] border border-[#342698] cursor-pointer"
-                >
-                  Ver todos os níveis
-                </button>
-              </div>
+
+              {/* Levels Grid */}
+              {loading && levels.length === 0 ? (
+                <div className="py-20 text-center text-[#b9b3ff] font-extrabold text-base">
+                  Carregando níveis...
+                </div>
+              ) : levels.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3.5">
+                  {levels.map((level, idx) => (
+                    <LevelCard
+                      key={level.id}
+                      level={level}
+                      index={idx}
+                      onSelect={(lvl) => setSelectedLevel(lvl)}
+                      onLike={handleLike}
+                      onCopy={handleCopy}
+                      copiedId={copiedId}
+                      liked={Boolean(likedMap[level.id])}
+                      sharedLabel={t.shared}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-16 text-center text-[#b9b3ff] font-bold space-y-3">
+                  <div className="text-4xl">🎮</div>
+                  <div dangerouslySetInnerHTML={{ __html: t.empty }} />
+                  <button
+                    onClick={() => {
+                      sfx.confirmar();
+                      setIsAddModalOpen(true);
+                    }}
+                    className="gbg-btn text-xs mt-2"
+                  >
+                    {t.addGame}
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </main>
+
+            {/* Bottom hint text */}
+            <p className="text-xs text-[#b9b3ff] mt-4 pt-3 border-t border-white/10 m-0">
+              {t.hint}
+            </p>
+          </section>
+        </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[#291e70] bg-[#0f0838] py-6 px-4 mt-12 text-center text-xs text-[#aba5f5] space-y-2">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 font-semibold">
-          <div>
-            GBG Next Level Hub · Game Builder Garage™ Nintendo Switch Community
-          </div>
-          <div className="flex items-center gap-4 text-white">
-            <button
-              onClick={() => {
-                sfx.tick();
-                setIsCreatorsModalOpen(true);
-              }}
-              className="hover:text-[#ffd21f] transition-colors cursor-pointer"
-            >
-              {t.creatorHall}
-            </button>
-            <span>·</span>
-            <button
-              onClick={handleSurpriseMe}
-              className="hover:text-[#ffd21f] transition-colors cursor-pointer"
-            >
-              {t.random}
-            </button>
-          </div>
-        </div>
+      <footer className="text-center text-xs text-[#b9b3ff] py-4 mt-6">
+        {t.credit}
       </footer>
 
-      {/* Modals & Overlays */}
+      {/* Modals & Dialogs */}
       {selectedLevel && (
         <LevelDetailModal
           level={selectedLevel}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Copy, Check, Star, Heart, User, Gamepad, HelpCircle, Send } from 'lucide-react';
 import { Level } from '../services/api';
 import { sfx } from '../utils/audio';
+import { copyCode } from '../utils/clipboard';
 import { Translations } from '../utils/i18n';
 
 interface LevelDetailModalProps {
@@ -64,21 +65,21 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
       <div
-        className="bg-[#171052] border-3 border-[#ffd21f] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto text-white shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-150"
+        className="bg-[#0e0a3a] border-4 border-[#ffd21f] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto text-white shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="sticky top-0 z-10 bg-[#171052]/95 backdrop-blur-md px-6 py-4 border-b border-[#2d2087] flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-[#0e0a3a]/95 backdrop-blur-md px-6 py-4 border-b border-[#3d6bff]/30 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-wider bg-[#3d6bff] text-white px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-black uppercase tracking-wider bg-[#3d6bff] text-white px-2.5 py-1 rounded-full shadow-sm">
               {level.genre}
             </span>
-            <span className="text-xs font-bold text-[#aba5f5] bg-[#221868] px-2.5 py-1 rounded-lg border border-[#342694]">
+            <span className="text-xs font-bold text-[#b9b3ff] bg-[#1a1470] px-2.5 py-1 rounded-full border border-[#3d6bff]/30">
               {level.difficulty}
             </span>
-            <span className="text-xs font-bold text-[#aba5f5] bg-[#221868] px-2.5 py-1 rounded-lg border border-[#342694]">
+            <span className="text-xs font-bold text-[#b9b3ff] bg-[#1a1470] px-2.5 py-1 rounded-full border border-[#3d6bff]/30">
               {level.players}
             </span>
           </div>
@@ -88,51 +89,49 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
               sfx.atras();
               onClose();
             }}
-            className="p-1.5 rounded-full hover:bg-white/10 text-[#aba5f5] hover:text-white transition-colors cursor-pointer"
+            className="p-1 rounded-full hover:bg-white/10 text-[#b9b3ff] hover:text-white transition-colors cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-5">
           {/* Title and Creator */}
           <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#ffd21f] leading-tight m-0">
               {level.title}
             </h2>
-            <div className="flex items-center gap-2 mt-2 text-sm text-[#aba5f5] font-semibold">
+            <div className="flex items-center gap-2 mt-2 text-sm text-[#b9b3ff] font-semibold flex-wrap">
               <User className="w-4 h-4 text-[#ffd21f]" />
               <span>Criado por: <strong className="text-white">{level.creator}</strong></span>
               <span className="mx-1">·</span>
               <div className="flex items-center gap-1 text-[#ffd21f]">
                 <Star className="w-4 h-4 fill-current" />
-                <span className="font-bold tabular-nums">{level.rating.toFixed(1)}</span>
-                <span className="text-[#aba5f5] text-xs">({level.ratingCount} avaliações)</span>
+                <span className="font-extrabold tabular-nums">{level.rating.toFixed(1)}</span>
+                <span className="text-[#b9b3ff] text-xs">({level.ratingCount} avaliações)</span>
               </div>
             </div>
           </div>
 
           {/* Big Game ID Box */}
-          <div className="bg-[#100a38] border-2 border-[#3d6bff] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner">
+          <div className="bg-[#1a1470] border-3 border-[#3d6bff] rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner">
             <div className="text-center sm:text-left">
-              <div className="text-xs font-extrabold uppercase tracking-widest text-[#aba5f5]">
+              <div className="text-xs font-extrabold uppercase tracking-widest text-[#b9b3ff]">
                 Game Builder Garage Code
               </div>
               <div className="text-2xl sm:text-3xl font-mono font-black text-[#ffd21f] tracking-widest mt-1 select-all">
                 {level.code}
               </div>
-              <div className="text-xs text-[#8e87e6] mt-1">
-                {level.copies} jogadores já copiaram este código
+              <div className="text-xs text-[#b9b3ff] mt-1">
+                {level.copies} cópias realizadas no servidor
               </div>
             </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
                 onClick={handleCopy}
-                className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-base font-black transition-all cursor-pointer ${
-                  isCopied
-                    ? 'bg-[#4be39a] text-[#06331f] shadow-md'
-                    : 'gbg-btn-green'
+                className={`gbg-btn-ok flex-1 sm:flex-initial flex items-center justify-center gap-2 py-3 px-6 text-sm font-black transition-all cursor-pointer ${
+                  isCopied ? 'bg-[#ffd21f] text-[#2a1f9e]' : ''
                 }`}
               >
                 {isCopied ? (
@@ -152,8 +151,8 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
                 onClick={handleLike}
                 className={`p-3 rounded-2xl border transition-all cursor-pointer ${
                   isLiked
-                    ? 'bg-[#ffd21f] text-[#160e54] border-[#ffd21f]'
-                    : 'bg-[#221768] text-white border-[#382a99] hover:bg-[#2b1f80]'
+                    ? 'bg-[#ffd21f] text-[#2a1f9e] border-[#ffd21f]'
+                    : 'bg-[#0e0a3a] text-white border-[#3d6bff]/40 hover:bg-[#1f1580]'
                 }`}
                 title="Curtir jogo"
               >
@@ -163,12 +162,12 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
           </div>
 
           {/* How to Enter Guide */}
-          <div className="bg-[#1e1564] border border-[#34259b] rounded-2xl p-4 text-xs space-y-2">
-            <div className="flex items-center gap-1.5 font-black text-[#ffd21f] text-sm">
+          <div className="bg-[#150f5c] border border-[#3d6bff]/40 rounded-2xl p-4 text-xs space-y-2">
+            <div className="flex items-center gap-1.5 font-extrabold text-[#ffd21f] text-sm">
               <HelpCircle className="w-4 h-4" />
               <span>{t.howToEnter}</span>
             </div>
-            <ol className="list-decimal list-inside space-y-1 text-[#d4d0ff] leading-relaxed">
+            <ol className="list-decimal list-inside space-y-1 text-[#d8d3ff] leading-relaxed">
               <li>{t.howToStep1}</li>
               <li>{t.howToStep2}</li>
               <li>{t.howToStep3}</li>
@@ -178,21 +177,21 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
           {/* Description & Controls */}
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#aba5f5] mb-1">
+              <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b9b3ff] mb-1">
                 {t.description}
               </h3>
-              <p className="text-sm text-[#e4e2ff] leading-relaxed bg-[#1b135e] p-3.5 rounded-xl border border-[#2d2087]">
+              <p className="text-sm text-white leading-relaxed bg-[#1a1470] p-3.5 rounded-xl border border-[#3d6bff]/30">
                 {level.description}
               </p>
             </div>
 
             {level.controls && (
               <div>
-                <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#aba5f5] mb-1 flex items-center gap-1.5">
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#b9b3ff] mb-1 flex items-center gap-1.5">
                   <Gamepad className="w-4 h-4 text-[#4be39a]" />
                   <span>{t.controls}</span>
                 </h3>
-                <p className="text-xs text-[#dcd9ff] font-medium bg-[#1b135e] p-3 rounded-xl border border-[#2d2087]">
+                <p className="text-xs text-[#d8d3ff] font-semibold bg-[#1a1470] p-3 rounded-xl border border-[#3d6bff]/30">
                   {level.controls}
                 </p>
               </div>
@@ -200,11 +199,11 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
 
             {level.tags && level.tags.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-[#aba5f5] font-bold">Tags:</span>
+                <span className="text-xs text-[#b9b3ff] font-bold">Tags:</span>
                 {level.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs font-semibold text-[#ffd21f] bg-[#221768] px-2.5 py-0.5 rounded-md border border-[#382b9a]"
+                    className="text-xs font-bold text-[#ffd21f] bg-[#1a1470] px-2.5 py-0.5 rounded-full border border-[#3d6bff]/30"
                   >
                     #{tag}
                   </span>
@@ -213,18 +212,18 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
             )}
           </div>
 
-          {/* Comments & Reviews Section */}
-          <div className="border-t border-[#2d2087] pt-5 space-y-4">
-            <h3 className="text-lg font-black text-white flex items-center justify-between">
+          {/* Reviews Section */}
+          <div className="border-t border-white/10 pt-4 space-y-4">
+            <h3 className="text-base font-extrabold text-[#ffd21f] flex items-center justify-between">
               <span>{t.reviews}</span>
-              <span className="text-xs font-semibold text-[#aba5f5]">
+              <span className="text-xs font-semibold text-[#b9b3ff]">
                 {level.comments?.length || 0} comentários
               </span>
             </h3>
 
             {/* Submit Comment Form */}
-            <form onSubmit={handleSubmitComment} className="bg-[#1b135e] border border-[#2e218b] rounded-2xl p-4 space-y-3">
-              <div className="text-xs font-bold text-[#ffd21f]">{t.writeReview}</div>
+            <form onSubmit={handleSubmitComment} className="bg-[#1a1470] border border-[#3d6bff]/30 rounded-2xl p-4 space-y-3">
+              <div className="text-xs font-extrabold text-[#ffd21f]">{t.writeReview}</div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
@@ -233,12 +232,11 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
                   onChange={(e) => setCommentAuthor(e.target.value)}
                   placeholder={t.yourName}
                   maxLength={25}
-                  className="bg-[#120c42] border border-[#352796] rounded-xl px-3 py-2 text-xs font-bold text-white placeholder-[#aba5f5] outline-none focus:border-[#ffd21f]"
+                  className="bg-[#0e0a3a] border border-[#3d6bff]/40 rounded-xl px-3 py-2 text-xs font-bold text-white placeholder-[#7f77dc] outline-none focus:border-[#ffd21f]"
                 />
 
-                {/* Rating Stars Selector */}
-                <div className="flex items-center gap-1 bg-[#120c42] border border-[#352796] rounded-xl px-3 py-1.5">
-                  <span className="text-xs font-bold text-[#aba5f5] mr-2">Nota:</span>
+                <div className="flex items-center gap-1 bg-[#0e0a3a] border border-[#3d6bff]/40 rounded-xl px-3 py-1.5">
+                  <span className="text-xs font-bold text-[#b9b3ff] mr-2">Nota:</span>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -267,14 +265,14 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
                 placeholder={t.yourComment}
                 rows={2}
                 maxLength={200}
-                className="w-full bg-[#120c42] border border-[#352796] rounded-xl px-3 py-2 text-xs font-medium text-white placeholder-[#aba5f5] outline-none focus:border-[#ffd21f] resize-none"
+                className="w-full bg-[#0e0a3a] border border-[#3d6bff]/40 rounded-xl px-3 py-2 text-xs font-medium text-white placeholder-[#7f77dc] outline-none focus:border-[#ffd21f] resize-none"
               />
 
               <div className="flex justify-end">
                 <button
                   type="submit"
                   disabled={isSubmitting || !commentText.trim()}
-                  className="gbg-btn-yellow flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black cursor-pointer disabled:opacity-50"
+                  className="gbg-btn text-xs py-1.5 px-4 disabled:opacity-50"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>{isSubmitting ? 'Enviando...' : t.sendReview}</span>
@@ -288,22 +286,22 @@ export const LevelDetailModal: React.FC<LevelDetailModalProps> = ({
                 level.comments.map((c) => (
                   <div
                     key={c.id}
-                    className="bg-[#130d44] border border-[#2b1f7e] rounded-xl p-3 text-xs space-y-1"
+                    className="bg-[#150f5c] border border-[#3d6bff]/20 rounded-xl p-3 text-xs space-y-1"
                   >
                     <div className="flex items-center justify-between">
-                      <strong className="text-[#ffd21f] font-black">{c.author}</strong>
+                      <strong className="text-[#ffd21f] font-extrabold">{c.author}</strong>
                       <div className="flex items-center gap-1 text-[#ffd21f]">
                         <Star className="w-3 h-3 fill-current" />
                         <span className="font-bold">{c.rating}</span>
-                        <span className="text-[#7f77dc] text-[10px] ml-1">· {c.date}</span>
+                        <span className="text-[#b9b3ff] text-[10px] ml-1">· {c.date}</span>
                       </div>
                     </div>
-                    <p className="text-[#dcd8ff]">{c.text}</p>
+                    <p className="text-[#d8d3ff] m-0">{c.text}</p>
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-[#aba5f5] text-center py-4">
-                  Seja o primeiro a avaliar este nível!
+                <p className="text-xs text-[#b9b3ff] text-center py-3 m-0">
+                  Nenhum comentário ainda. Seja o primeiro a avaliar!
                 </p>
               )}
             </div>

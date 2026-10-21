@@ -1,92 +1,181 @@
 @import "tailwindcss";
 
 :root {
-  --bg-dark: #120c42;
-  --bg-card: #1c1466;
-  --bg-surface: #261c82;
-  --yel-gbg: #ffd21f;
-  --yel-shadow: #d4a300;
-  --blue-gbg: #3d6bff;
-  --green-gbg: #4be39a;
-  --text-muted: #aba5f5;
-  --ink: #160e54;
+  --bg: #2a1f9e;
+  --bg2: #1f1580;
+  --grid: rgba(255, 255, 255, 0.08);
+  --panel: #0e0a3a;
+  --yel: #ffd21f;
+  --yel2: #f0b800;
+  --ink: #2a1f9e;
+  --txt: #ffffff;
+  --mut: #b9b3ff;
+  --card: #1a1470;
+  --ok: #4be39a;
+  --ok-shadow: #28b872;
+  --blue-nodon: #3d6bff;
+  --blue-nodon-shadow: #2047cb;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Baloo 2', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-dark);
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
-  color: #ffffff;
   min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: var(--txt);
+  font-family: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Custom tactile button styles matching Game Builder Garage UI */
-.gbg-btn-yellow {
-  background-color: #ffd21f;
-  color: #160e54;
+/* Authentic Game Builder Garage Button Styles */
+.gbg-btn {
+  font-family: inherit;
   font-weight: 800;
-  box-shadow: 0 4px 0 #cf9c00;
-  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
-}
-
-.gbg-btn-yellow:hover {
-  background-color: #ffe04d;
-}
-
-.gbg-btn-yellow:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #cf9c00;
-}
-
-.gbg-btn-blue {
-  background-color: #3d6bff;
-  color: #ffffff;
-  font-weight: 800;
-  box-shadow: 0 4px 0 #2047cb;
+  border: 0;
+  background: var(--yel);
+  color: var(--ink);
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--yel2);
   transition: transform 0.08s ease, box-shadow 0.08s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  user-select: none;
 }
 
-.gbg-btn-blue:hover {
-  background-color: #557eff;
-}
-
-.gbg-btn-blue:active {
+.gbg-btn:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 0 #2047cb;
+  box-shadow: 0 1px 0 var(--yel2);
 }
 
-.gbg-btn-green {
-  background-color: #4be39a;
+.gbg-btn-ok {
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  border: 0;
+  background: var(--ok);
   color: #06331f;
-  font-weight: 800;
-  box-shadow: 0 4px 0 #26b270;
+  padding: 4px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ok-shadow);
   transition: transform 0.08s ease, box-shadow 0.08s ease;
+  user-select: none;
 }
 
-.gbg-btn-green:hover {
-  background-color: #63eab0;
-}
-
-.gbg-btn-green:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #26b270;
+.gbg-btn-ok:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--ok-shadow);
 }
 
 .gbg-btn-ghost {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  border: 2px solid rgba(171, 165, 245, 0.35);
-  font-weight: 700;
-  transition: background-color 0.15s, border-color 0.15s;
+  font-family: inherit;
+  font-weight: 800;
+  border: 0;
+  background: transparent;
+  color: var(--txt);
+  box-shadow: inset 0 0 0 2px var(--mut);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background-color 0.12s, box-shadow 0.12s, color 0.12s;
+  user-select: none;
 }
 
 .gbg-btn-ghost:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: #ffd21f;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 2px var(--yel);
+  color: var(--yel);
+}
+
+/* Big Circular Nodon Button from original GBG design */
+.gbg-new-btn {
+  background: var(--yel);
+  color: var(--ink);
+  border: 6px solid var(--blue-nodon);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  width: 146px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 800;
+  font-size: 17px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1.15;
+  box-shadow: 0 6px 0 var(--blue-nodon-shadow), 0 10px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  user-select: none;
+}
+
+.gbg-new-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 0 var(--blue-nodon-shadow), 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.gbg-new-btn:active {
+  transform: translateY(4px) scale(0.98);
+  box-shadow: 0 2px 0 var(--blue-nodon-shadow);
+}
+
+.gbg-new-btn b {
+  display: block;
+  font-size: 34px;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .gbg-new-btn {
+    width: 96px;
+    font-size: 12px;
+    border-width: 4px;
+    box-shadow: 0 4px 0 var(--blue-nodon-shadow);
+  }
+  .gbg-new-btn b {
+    font-size: 22px;
+  }
+}
+
+/* Card pop animation */
+@keyframes gbgPop {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gbg-card {
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  animation: gbgPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.gbg-card:hover,
+.gbg-card:focus-within {
+  transform: scale(1.03);
+  border-color: var(--yel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 /* Custom scrollbars */
@@ -94,16 +183,13 @@ body {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #120c42;
+  background: var(--panel);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #2a2080;
+  background: #372b9a;
   border-radius: 999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d30a8;
+  background: var(--blue-nodon);
 }

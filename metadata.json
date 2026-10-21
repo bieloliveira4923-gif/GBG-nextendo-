@@ -1,7 +1,7 @@
 {
   "name": "GBG Next Level Hub",
   "description": "Plataforma completa de busca, compartilhamento e descoberta de níveis de Game Builder Garage com servidor em tempo real e sons originais.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["clipboard-write", "clipboard-read"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
 

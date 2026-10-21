@@ -299,6 +299,9 @@ app.get('/api/creators', (_req: Request, res: Response) => {
   res.json(list.slice(0, 10));
 });
 
+// Serve static files from public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // ----------------- VITE INTEGRATION ----------------- //
 async function startServer() {
   const isProduction = process.env.NODE_ENV === 'production';
