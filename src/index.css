@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --bg-dark: #120c42;
+  --bg-card: #1c1466;
+  --bg-surface: #261c82;
+  --yel-gbg: #ffd21f;
+  --yel-shadow: #d4a300;
+  --blue-gbg: #3d6bff;
+  --green-gbg: #4be39a;
+  --text-muted: #aba5f5;
+  --ink: #160e54;
+}
+
+body {
+  margin: 0;
+  font-family: 'Baloo 2', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-dark);
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Custom tactile button styles matching Game Builder Garage UI */
+.gbg-btn-yellow {
+  background-color: #ffd21f;
+  color: #160e54;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #cf9c00;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+}
+
+.gbg-btn-yellow:hover {
+  background-color: #ffe04d;
+}
+
+.gbg-btn-yellow:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #cf9c00;
+}
+
+.gbg-btn-blue {
+  background-color: #3d6bff;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #2047cb;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.gbg-btn-blue:hover {
+  background-color: #557eff;
+}
+
+.gbg-btn-blue:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #2047cb;
+}
+
+.gbg-btn-green {
+  background-color: #4be39a;
+  color: #06331f;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #26b270;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.gbg-btn-green:hover {
+  background-color: #63eab0;
+}
+
+.gbg-btn-green:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #26b270;
+}
+
+.gbg-btn-ghost {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 2px solid rgba(171, 165, 245, 0.35);
+  font-weight: 700;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.gbg-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffd21f;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #120c42;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2080;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d30a8;
+}
