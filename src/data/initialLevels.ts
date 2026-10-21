@@ -1,0 +1,313 @@
+export interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  rating: number;
+  date: string;
+}
+
+export interface Level {
+  id: string;
+  code: string;
+  title: string;
+  creator: string;
+  genre: string;
+  difficulty: string;
+  players: string;
+  description: string;
+  controls?: string;
+  likes: number;
+  copies: number;
+  rating: number;
+  ratingCount: number;
+  tags: string[];
+  createdAt: string;
+  comments: Comment[];
+}
+
+export const INITIAL_LEVELS: Level[] = [
+  {
+    id: "lvl-1",
+    code: "G 004 275 MPR",
+    title: "~~~~",
+    creator: "Rule86",
+    genre: "Experiment",
+    difficulty: "Médio",
+    players: "1 Jogador",
+    description: "Uma experiência surreal e intrigante criada com conexões complexas de Nodon de efeito e física oscilatória.",
+    controls: "Analógico para mover, Botão A para interagir",
+    likes: 142,
+    copies: 380,
+    rating: 4.6,
+    ratingCount: 28,
+    tags: ["Física", "Arte", "Nodon"],
+    createdAt: "2024-03-12T14:20:00Z",
+    comments: [
+      { id: "c1", author: "PixelNodon", text: "Incrível uso dos Nodons de cálculo!", rating: 5, date: "2024-03-15" }
+    ]
+  },
+  {
+    id: "lvl-2",
+    code: "G 004 64B PTB",
+    title: "The Backrooms horror [DEMO]",
+    creator: "coolsmm3",
+    genre: "Terror",
+    difficulty: "Difícil",
+    players: "1 Jogador",
+    description: "Você acorda nos corredores infinitos e silenciosos das Backrooms. Encontre a saída antes que a entidade te alcance.",
+    controls: "Analógico Esq (Andar), Analógico Dir (Câmera), Botão B (Correr), Y (Lanterna)",
+    likes: 490,
+    copies: 1250,
+    rating: 4.9,
+    ratingCount: 94,
+    tags: ["Terror", "Primeira Pessoa", "Fuga"],
+    createdAt: "2024-02-10T18:00:00Z",
+    comments: [
+      { id: "c2", author: "SwitchGamer_BR", text: "Levei um susto surreal na curva! Muito bem feito.", rating: 5, date: "2024-02-12" }
+    ]
+  },
+  {
+    id: "lvl-3",
+    code: "G 003 HKP M2W",
+    title: "A totally normal and easy game",
+    creator: "yorix",
+    genre: "Puzzle",
+    difficulty: "Insano",
+    players: "1 Jogador",
+    description: "Um jogo que parece inocente no começo... mas está repleto de armadilhas troll, plataformas falsas e surpresas que vão testar sua paciência!",
+    controls: "Direcional/Analógico para andar, A para pular",
+    likes: 320,
+    copies: 890,
+    rating: 4.7,
+    ratingCount: 61,
+    tags: ["Troll", "Plataforma", "Desafio"],
+    createdAt: "2024-01-20T11:00:00Z",
+    comments: [
+      { id: "c3", author: "CaioDev", text: "Caí em 15 armadilhas seguidas kkkkk nota 10", rating: 5, date: "2024-01-22" }
+    ]
+  },
+  {
+    id: "lvl-4",
+    code: "G 003 FM5 42C",
+    title: "First person shooter test",
+    creator: "yorix",
+    genre: "Tiro",
+    difficulty: "Médio",
+    players: "1 Jogador",
+    description: "Engine fluida de tiro em 1ª pessoa no Game Builder Garage com recuo de arma, mira de precisão e alvos em movimento.",
+    controls: "Analógico Esq (Movimento), Analógico Dir (Mirar), Gatilho ZR (Atirar), ZL (Mira fina)",
+    likes: 265,
+    copies: 710,
+    rating: 4.5,
+    ratingCount: 42,
+    tags: ["FPS", "Tiro", "Engine"],
+    createdAt: "2024-01-28T09:30:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-5",
+    code: "G 003 VCD 2MN",
+    title: "GD Stereo madness (unfinished)",
+    creator: "yorix",
+    genre: "Ritmo",
+    difficulty: "Difícil",
+    players: "1 Jogador",
+    description: "Recriação detalhada da primeira fase de Geometry Dash sincronizada com batidas sonoras e física de pulo exata.",
+    controls: "Pressione A ou Toque na tela para pular no ritmo",
+    likes: 512,
+    copies: 1420,
+    rating: 4.8,
+    ratingCount: 110,
+    tags: ["Ritmo", "Geometry Dash", "Música"],
+    createdAt: "2024-02-05T15:45:00Z",
+    comments: [
+      { id: "c4", author: "LucasRhythm", text: "A sincronia com a música ficou perfeita!", rating: 5, date: "2024-02-06" }
+    ]
+  },
+  {
+    id: "lvl-6",
+    code: "G 002 V3V 8Y1",
+    title: "Button Mashing Game",
+    creator: "Wolf5930",
+    genre: "Arcade",
+    difficulty: "Fácil",
+    players: "1-2 Jogadores",
+    description: "Teste a velocidade dos seus dedos! Aperte o botão o mais rápido possível antes do tempo acabar para quebrar o recorde.",
+    controls: "Metralhadora de dedo no Botão A!",
+    likes: 184,
+    copies: 430,
+    rating: 4.2,
+    ratingCount: 35,
+    tags: ["Arcade", "Minigame", "Party"],
+    createdAt: "2023-11-14T20:10:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-7",
+    code: "G 003 8RM RJV",
+    title: "Fish Catching Game",
+    creator: "Joonboi",
+    genre: "Minigame",
+    difficulty: "Médio",
+    players: "1 Jogador",
+    description: "Pesque peixes exóticos em um lago calmo. Preste atenção no indicador de tensão da linha para não deixar o peixe escapar!",
+    controls: "Analógico para posicionar a vara, Botão A para fisgar e puxar",
+    likes: 298,
+    copies: 680,
+    rating: 4.6,
+    ratingCount: 50,
+    tags: ["Pesca", "Relaxante", "Casual"],
+    createdAt: "2024-02-14T17:00:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-8",
+    code: "G 002 Y1P 3FR",
+    title: "Cookie Clicker",
+    creator: "Joonboi",
+    genre: "Casual",
+    difficulty: "Fácil",
+    players: "1 Jogador",
+    description: "O clássico vício dos cookies recriado no Game Builder Garage com upgrades automáticos e multiplicadores de clique.",
+    controls: "Toque na tela ou aperte A para assar cookies; D-Pad para comprar melhorias",
+    likes: 420,
+    copies: 990,
+    rating: 4.7,
+    ratingCount: 82,
+    tags: ["Clicker", "Incremental", "Addictive"],
+    createdAt: "2023-12-01T12:00:00Z",
+    comments: [
+      { id: "c5", author: "CookieMonster", text: "Cheguei a 10.000 cookies por segundo!", rating: 5, date: "2023-12-10" }
+    ]
+  },
+  {
+    id: "lvl-9",
+    code: "G 003 4WG NHV",
+    title: "GBG PLINKO",
+    creator: "Joonboi",
+    genre: "Arcade",
+    difficulty: "Fácil",
+    players: "1-4 Jogadores",
+    description: "Solte a bolinha no topo e assista a física realista decidir seu multiplicador de pontos. Sons cativantes e física divertida!",
+    controls: "L/R para posicionar o disparador, Botão A para soltar a esfera",
+    likes: 380,
+    copies: 840,
+    rating: 4.6,
+    ratingCount: 64,
+    tags: ["Física", "Plinko", "Sorte"],
+    createdAt: "2024-01-05T16:20:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-10",
+    code: "G 003 2XX 5HB",
+    title: "Red Light, Green Light",
+    creator: "Joonboi",
+    genre: "Ação",
+    difficulty: "Difícil",
+    players: "1-4 Jogadores",
+    description: "Batatinha frita 1, 2, 3! Avance enquanto a música toca e congele no mesmo instante em que ela parar, ou seja eliminado.",
+    controls: "Analógico para correr, solte imediatamente para congelar",
+    likes: 610,
+    copies: 1890,
+    rating: 4.9,
+    ratingCount: 140,
+    tags: ["Squid Game", "Multiplayer", "Sobrevivência"],
+    createdAt: "2023-10-30T19:00:00Z",
+    comments: [
+      { id: "c6", author: "BielMaster", text: "Muito tenso jogar com os amigos!", rating: 5, date: "2023-11-02" }
+    ]
+  },
+  {
+    id: "lvl-11",
+    code: "G 002 7HT P7L",
+    title: "wolderfool woard v2",
+    creator: "mega_biel10",
+    genre: "Aventura",
+    difficulty: "Médio",
+    players: "1 Jogador",
+    description: "Explore um mundo aberto cheio de segredos, saltos acrobáticos e moedas escondidas feitas com carinho pelo mega_biel10!",
+    controls: "Analógico (Andar), A (Pulo duplo), B (Rolar), Y (Interagir)",
+    likes: 530,
+    copies: 1340,
+    rating: 4.8,
+    ratingCount: 89,
+    tags: ["Mundo Aberto", "Aventura", "Exploração"],
+    createdAt: "2024-03-01T21:00:00Z",
+    comments: [
+      { id: "c7", author: "Kirbus", text: "Ótimo design de mapa e progressão natural!", rating: 5, date: "2024-03-03" }
+    ]
+  },
+  {
+    id: "lvl-12",
+    code: "G 001 9KT 4LM",
+    title: "Super Nodon Kart 64",
+    creator: "NodonRacer",
+    genre: "Corrida",
+    difficulty: "Médio",
+    players: "1-2 Jogadores",
+    description: "Corrida de kart em 3D com drift, turbos na pista e itens de casca de banana para atrapalhar seus rivais.",
+    controls: "ZR (Acelerar), ZL (Frear/Ré), L/R (Pular para Drift), A (Usar Item)",
+    likes: 740,
+    copies: 2150,
+    rating: 4.9,
+    ratingCount: 165,
+    tags: ["Corrida", "Kart", "Drift"],
+    createdAt: "2024-02-18T14:10:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-13",
+    code: "G 005 32D 81Q",
+    title: "Neon Cyberpunk Hoverbike",
+    creator: "AeroTech",
+    genre: "Ação",
+    difficulty: "Difícil",
+    players: "1 Jogador",
+    description: "Voe em alta velocidade desviando de arranha-céus futuristas em uma moto flutuante cheia de luzes e efeitos visuais.",
+    controls: "Analógico Esq (Inclinação), ZR (Propulsores), B (Turbo Nitrogênio)",
+    likes: 395,
+    copies: 910,
+    rating: 4.7,
+    ratingCount: 73,
+    tags: ["Cyberpunk", "Velocidade", "Sci-Fi"],
+    createdAt: "2024-03-10T11:20:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-14",
+    code: "G 000 78F 55P",
+    title: "Zelda Dungeon Demake: Lost Shrine",
+    creator: "HeroOfNodons",
+    genre: "Puzzle",
+    difficulty: "Médio",
+    players: "1 Jogador",
+    description: "Um calabouço clássico visto de cima (top-down) com quebra-cabeças de blocos, chaves trancadas e batalha contra chefe.",
+    controls: "D-Pad/Analógico (Andar), A (Espada), B (Escudo), Y (Bomba)",
+    likes: 680,
+    copies: 1940,
+    rating: 4.9,
+    ratingCount: 150,
+    tags: ["Zelda", "Dungeon", "Puzzle"],
+    createdAt: "2024-01-15T18:00:00Z",
+    comments: []
+  },
+  {
+    id: "lvl-15",
+    code: "G 004 99P 11X",
+    title: "Portal GBG Demake",
+    creator: "mega_biel10",
+    genre: "Puzzle",
+    difficulty: "Difícil",
+    players: "1 Jogador",
+    description: "Crie portais azuis e laranjas para resolver desafios gravitacionais e escapar do laboratório!",
+    controls: "ZR (Portal Azul), ZL (Portal Laranja), Analógico (Mover)",
+    likes: 410,
+    copies: 880,
+    rating: 5.0,
+    ratingCount: 45,
+    tags: ["Portal", "Puzzle", "Física"],
+    createdAt: "2024-03-18T10:00:00Z",
+    comments: []
+  }
+];

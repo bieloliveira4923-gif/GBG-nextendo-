@@ -9,6 +9,38 @@
     <meta property="og:description" content="Plataforma completa de busca, compartilhamento e descoberta de níveis de Game Builder Garage com servidor em tempo real e sons originais." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      /* Ensure window.fetch has both getter and setter for browser extension compatibility */
+      (function() {
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          try {
+            var _pf = Window.prototype.fetch;
+            Object.defineProperty(Window.prototype, 'fetch', {
+              get: function() { return _pf; },
+              set: function(v) { _pf = v; },
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e2) {}
+        }
+        /* Suppress external chrome-extension injection errors */
+        window.addEventListener('error', function(e) {
+          if (e.filename && (e.filename.indexOf('chrome-extension://') !== -1 || e.filename.indexOf('moz-extension://') !== -1)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
